@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>block blast</title>
+    <link rel="stylesheet" href="../css/game.css" />
+    <link rel="icon" href="../unnamed.png" />
+    <!-- <script type="module" src="../js/blockGame.js"></script> -->
+    <script src="../js/createblock.js" defer></script>
+    <script src="../js/button.js" defer></script>
+  </head>
+
+  <body dir="rtl">
+    <main>
+      <button id="stop"><strong>| |</strong></button>
+      <div class="container-table">
+        <div id="container-block">
+          <div class="block1"></div>
+          <div class="block2"></div>
+          <div class="block3"></div>
+        </div>
+      </div>
+      <div id="points">
+        <p><strong>הנקודות שלי: </strong><span id="point">0</span></p>
+        <p><strong>שיא: </strong><span id="score"></span></p>
+      </div>
+    </main>
+    <div class="container-stop">
+      <div id="close"><button>x</button></div>
+      <div id="container-links">
+        <button id="homePage">דף בית</button>
+        <button class="restartBtn">משחק חוזר</button>
+      </div>
+    </div>
+    <div id="gameOverScreen" class="game-over hidden">
+      <h2>Game Over 🎮</h2>
+      <h3 id="userName"></h3>
+      <p>הנקודות שלך: <span id="finalScore"></span></p>
+      <p>השיא: <span id="highScore"></span></p>
+      <button id="restartBtn">משחק חדש</button>
+    </div>
+    <div id="newRecord" class="hidden">🏆 שיא חדש! 🏆</div>
+  </body>
+</html>

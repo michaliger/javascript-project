@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>ברוכים הבאים למשחק!</title>
+  <script src="./js/login.js" defer></script>
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+  <div class="container">
+    <h1>משחק בלוקים</h1>
+    <input type="text" id="playerName" placeholder="הכנס שם שחקן..." />
+
+    <label for="difficulty">בחר רמה:</label>
+    <select id="difficulty">
+      <option value="easy">קל</option>
+      <option value="medium" selected>בינוני</option>
+      <option value="hard">קשה</option>
+    </select>
+    
+    <button id="startGame">התחל משחק</button>
+    <button id="Gameinstructions">הוראות המשחק</button>
+    <div id="instructions">
+      <h3>הוראות:</h3>
+      <ul>
+        <li>גרור את הבלוקים אל תוך הלוח.</li>
+        <li>נסה למלא שורות או עמודות כדי לקבל ניקוד.</li>
+        <li>אם אין יותר מהלכים אפשריים – המשחק נגמר.</li>
+      </ul>
+    </div>
+  </div>
