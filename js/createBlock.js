@@ -427,7 +427,7 @@ function createshape(containerBlock) {
     if (!hasAnyValidMove) {
       showGameOver(pointsnum);
     }
-  }, 500);
+  }, 1000);
 
   let isDragging = false;
   let offsetX, offsetY;
@@ -514,9 +514,9 @@ function createshape(containerBlock) {
         setTimeout(() => {
           check(allBlockArr, maintableArr, table);
           if (!hasAnyValidMove) {
-            showGameOver(pointsnum + tdcnt * 10);
+            showGameOver(pointsnum);
           }
-        }, 500);
+        }, 1000);
       }
     } else {
       table.style.top = startTop + "px";
@@ -547,10 +547,10 @@ function createshape(containerBlock) {
           maintableArr[j][col].classList.remove("style");
         }
       }
-      if (cnt1 === 2) num = 100 * 2;
-      else if (cnt1 === 3) num = 100 * 3;
-      else if (cnt1 === 4) num = 100 * 4;
-      else if (cnt1 === 5) num = 100 * 5;
+      if (cnt1 === 2) num = 100 * 3;
+      else if (cnt1 === 3) num = 100 * 5;
+      else if (cnt1 === 4) num = 100 * 7;
+      else if (cnt1 === 5) num = 100 * 9;
       for (let i = 1; i <= num; i++) {
         setTimeout(() => {
           pointsnum++;
