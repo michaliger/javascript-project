@@ -1,17 +1,16 @@
 const input = document.querySelector('#playerName');
 const start = document.querySelector('#startGame');
-const instructions = document.querySelector('#Gameinstructions')
+const instructions = document.querySelector('#Gameinstructions');
+
+// One click handler: save the name, then open the game with the chosen level
 start.addEventListener('click', (e) => {
-     e.preventDefault();
-    const name = input.value;
-    localStorage.nameuser = name;
-    window.location.href = './html/game.html';
+  e.preventDefault();
+  localStorage.nameuser = input.value;
+  const difficulty = document.getElementById('difficulty').value;
+  window.location.href = `./html/game.html?difficulty=${difficulty}`;
 });
-instructions.addEventListener('click' ,()=>{
-    const Theinstructions = document.querySelector('#instructions')
-    Theinstructions.style.display = Theinstructions.style.display === "none" ? "block" : "none";
-});
-document.getElementById("startGame").addEventListener("click", () => {
-  const difficulty = document.getElementById("difficulty").value;
-  window.location.href = `html/game.html?difficulty=${difficulty}`;
+
+instructions.addEventListener('click', () => {
+  const theInstructions = document.querySelector('#instructions');
+  theInstructions.style.display = theInstructions.style.display === 'none' ? 'block' : 'none';
 });

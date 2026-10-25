@@ -251,7 +251,9 @@ const containerBlock = document.querySelector("#container-block");
 const div = document.querySelectorAll("#container-block>div");
 
 const urlParams = new URLSearchParams(window.location.search);
-const difficulty = urlParams.get("difficulty");
+const difficulty = urlParams.get("difficulty") || "medium";
+const points = document.querySelector("#points");
+let gameOver = false;
 let numOfTd;
 if (difficulty === "easy") {
   containerTable.style.flexDirection = "row";
@@ -391,6 +393,9 @@ function createshape(containerBlock) {
 
   function hasAnyValidMove() {
     const blockTables = document.querySelectorAll("#container-block table");
+    // All three blocks already placed: new ones are on the way, so the game isn't over
+    const waiting = [...blockTables].filter((t) => t.style.display !== "none");
+    if (waiting.length === 0) return true;
     let any = false;
 
     for (let block of blockTables) {
@@ -424,7 +429,7 @@ function createshape(containerBlock) {
   let cntFalse = 0;
   setTimeout(() => {
     check(allBlockArr, maintableArr, table);
-    if (!hasAnyValidMove) {
+    if (!hasAnyValidMove()) {
       showGameOver(pointsnum);
     }
   }, 1000);
@@ -432,7 +437,10 @@ function createshape(containerBlock) {
   let isDragging = false;
   let offsetX, offsetY;
 
-  table.addEventListener("mousedown", (e) => {
+  table.style.touchAction = "none";
+  table.addEventListener("pointerdown", (e) => {
+    if (gameOver) return;
+    table.setPointerCapture(e.pointerId);
     for (let i = 0; i < blockArr.length; i++) {
       blockArr[i].forEach((td) => {
         td.style.width = "50px";
@@ -447,14 +455,15 @@ function createshape(containerBlock) {
     table.style.cursor = "grabbing";
   });
 
-  document.addEventListener("mousemove", (e) => {
+  table.addEventListener("pointermove", (e) => {
     if (isDragging) {
       table.style.left = e.clientX - offsetX + "px";
       table.style.top = e.clientY - offsetY + "px";
     }
   });
 
-  table.addEventListener("mouseup", (e) => {
+  table.addEventListener("pointerup", (e) => {
+    if (!isDragging) return;
     isDragging = false;
     table.style.cursor = "grab";
     const rectBlockArr = [];
@@ -468,7 +477,11 @@ function createshape(containerBlock) {
     const index2 = [];
     let cnt = 0;
 
-    place.forEach((p, index) => {
+    const livePlace = tds.map((td) => {
+      const r = td.getBoundingClientRect();
+      return { top: r.top, left: r.left };
+    });
+    livePlace.forEach((p, index) => {
       for (let i = 0; i < rectBlockArr.length; i++) {
         if (
           Math.abs(p.top - rectBlockArr[i].top) < 30 &&
@@ -500,10 +513,6 @@ function createshape(containerBlock) {
       table.style.display = "none";
       currentBlock++;
       cntFalse = 0;
-      check(allBlockArr, maintableArr, table);
-      if (!hasAnyValidMove) {
-        showGameOver(pointsnum);
-      }
 
       if (currentBlock === 3) {
         createshape(block1);
@@ -513,7 +522,7 @@ function createshape(containerBlock) {
 
         setTimeout(() => {
           check(allBlockArr, maintableArr, table);
-          if (!hasAnyValidMove) {
+          if (!hasAnyValidMove()) {
             showGameOver(pointsnum);
           }
         }, 1000);
@@ -600,28 +609,28 @@ function createshape(containerBlock) {
         anyFullRowOrCol = true;
         setTimeout(() => {
           check(allBlockArr, maintableArr, table);
-          if (!hasAnyValidMove) {
+          if (!hasAnyValidMove()) {
             showGameOver(pointsnum);
           }
-        }, 500);
+        }, 700);
       } else if (fullRow) {
         reset(i, 0, true);
         anyFullRowOrCol = true;
         setTimeout(() => {
           check(allBlockArr, maintableArr, table);
-          if (!hasAnyValidMove) {
+          if (!hasAnyValidMove()) {
             showGameOver(pointsnum);
           }
-        }, 500);
+        }, 700);
       } else if (fullCol) {
         reset(0, i, false);
         anyFullRowOrCol = true;
         setTimeout(() => {
           check(allBlockArr, maintableArr, table);
-          if (!hasAnyValidMove) {
+          if (!hasAnyValidMove()) {
             showGameOver(pointsnum);
           }
-        }, 500);
+        }, 700);
       }
     }
 
@@ -631,7 +640,7 @@ function createshape(containerBlock) {
     if (anyFullRowOrCol) {
       setTimeout(() => {
         if (!hasAnyValidMove()) showGameOver(pointsnum);
-      }, 500);
+      }, 700);
     }
 
     if (blockPoint && !anyFullRowOrCol) {
@@ -660,6 +669,8 @@ if (!localStorage.getItem("highScore")) {
 }
 
 function showGameOver(finalPoints) {
+  if (gameOver) return;
+  gameOver = true;
   const screen = document.getElementById("gameOverScreen");
   const finalScore = document.getElementById("finalScore");
   const highScore = document.getElementById("highScore");
